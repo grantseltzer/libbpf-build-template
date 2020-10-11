@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <bpf/libbpf.h>
 #include <bpf/bpf.h>
-#include "shmoo.skel.h"
+#include "example.skel.h"
 #include "trace_helpers.h"
 /* Tune the buffer size and wakeup rate. These settings cope with roughly
  * 50k opens/sec.
@@ -45,23 +45,23 @@ int main(int arg, char **argv)
 {
     struct perf_buffer_opts pb_opts;
     struct perf_buffer *pb = NULL;
-	struct shmoo_bpf *obj;
+	struct example_bpf *obj;
     int err;
 	__u64 time_end = get_ktime_ns();
 
-    obj = shmoo_bpf__open();
+    obj = example_bpf__open();
     if (!obj) {
         fprintf(stderr, "failed to open and/or load BPF object\n");
 		return 1;
     }
 
-    err = shmoo_bpf__load(obj);
+    err = example_bpf__load(obj);
     if (err) {
         fprintf(stderr, "failed to load BPF object: %d\n", err);
 		goto cleanup;
     }
 
-    err = shmoo_bpf__attach(obj);
+    err = example_bpf__attach(obj);
     if (err) {
         fprintf(stderr, "failed to attach BPF program\n");
         goto cleanup;
@@ -91,7 +91,7 @@ int main(int arg, char **argv)
 
 cleanup:
     perf_buffer__free(pb);
-    shmoo_bpf__destroy(obj);
+    example_bpf__destroy(obj);
 
     return err != 0;
 }

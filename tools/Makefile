@@ -13,7 +13,7 @@ CFLAGS := -g -O2 -Wall
 ARCH := $(shell uname -m | sed 's/x86_64/x86/')
 
 APPS = \
-	shmoo \
+	example \
 	#
 
 COMMON_OBJ = \
@@ -37,29 +37,23 @@ endif
 
 .PHONY: clean
 clean:
-	$(call msg,CLEAN)
 	$(QUIETLY)rm -rf $(OUTPUT) $(APPS)
 
 $(OUTPUT) $(OUTPUT)/libbpf:
-	$(call msg,MKDIR,$@)
 	$(QUIETLY)mkdir -p $@
 
 $(APPS): %: $(OUTPUT)/%.o $(LIBBPF_OBJ) $(COMMON_OBJ) | $(OUTPUT)
-	$(call msg,BINARY,$@)
-	$(QUIETLY)$(CC) $(CFLAGS) $^ -lelf -lz -o $@
+	$(QUIETLY)gcc $(CFLAGS) $^ -lelf -lz -o $@
 
 $(patsubst %,$(OUTPUT)/%.o,$(APPS)): %.o: %.skel.h
 
 $(OUTPUT)/%.o: %.c $(wildcard %.h) | $(OUTPUT)
-	$(call msg,CC,$@)
-	$(QUIETLY)$(CC) $(CFLAGS) $(INCLUDES) -c $(filter %.c,$^) -o $@
+	$(QUIETLY)gcc $(CFLAGS) $(INCLUDES) -c $(filter %.c,$^) -o $@
 
 $(OUTPUT)/%.skel.h: $(OUTPUT)/%.bpf.o | $(OUTPUT)
-	$(call msg,GEN-SKEL,$@)
 	$(QUIETLY)$(BPFTOOL) gen skeleton $< > $@
 
 $(OUTPUT)/%.bpf.o: %.bpf.c $(LIBBPF_OBJ) $(wildcard %.h) vmlinux.h | $(OUTPUT)
-	$(call msg,BPF,$@)
 	$(QUIETLY)$(CLANG) -g -O2 -target bpf -D__TARGET_ARCH_$(ARCH)		      \
 		     $(INCLUDES) -c $(filter %.c,$^) -o $@ &&		      \
 	$(LLVM_STRIP) -g $@
