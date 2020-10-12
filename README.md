@@ -49,4 +49,4 @@ The Makefile is complicated if you're not familiar with GNU Make. Here's a break
 
 ## Further reading
 
-[BCC to libbpf conversion guide] by Andrii Nakryiko
+[BPF Portability and CO-RE](https://nakryiko.com/posts/bpf-portability-and-co-re/) by Andrii Nakryiko
