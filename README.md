@@ -27,5 +27,26 @@ The Makefile is complicated if you're not familiar with GNU Make. Here's a break
 
 - Goes into `src/cc/libbpf` (loaded as a git submodule)
 
+- Creates `tools/.output/libbpf/staticobjs`
+
+- Creates a handful of static objects from libbpf.
+
+- Creates an archive of all those static objects called `libbpf.a`
+
+- Installs libbpf header files to `tools/.output/bpf`
+
+- Installs the libbpf package config file to `tools/.output/libbpf/libbpf.pc`
+
+- Compiles bpf code to an object file using clang
+`clang -g -O2 -target bpf -D__TARGET_ARCH_x86 -I.output -c example.bpf.c -o .output/example.bpf.o`
+
+- Generates a skeleton of the bpf object file
+`bin/bpftool gen skeleton .output/example.bpf.o > .output/example.skel.h`
+
+- Compiles helper function object files with gcc
+
+- Compiles your bpf userspace code and links it against the helper function object files
 
 ## Further reading
+
+[BCC to libbpf conversion guide] by Andrii Nakryiko

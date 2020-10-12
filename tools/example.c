@@ -33,7 +33,7 @@ static struct env {
 
 void handle_event(void *ctx, int cpu, void *data, __u32 data_sz)
 {
-    printf("%d\n", cpu);
+    printf("Test: %d\n", cpu);
 }
 
 void handle_lost_events(void *ctx, int cpu, __u64 lost_cnt)
