@@ -13,13 +13,15 @@ This repository serves as a template to help eBPF developers build tools written
 
 - Include `<name>.skel.h` in your userspace code.
 
-- Include `vmlinux.h` in your bpf code
+- Include `vmlinux.h` in your bpf code.
 
-- Add `<name>` to `'APPS'` in `Makefile`
+- Add `<name>` to `'APPS'` in `Makefile`.
 
-- `make` from tools
+- `make` from tools.
 
-- Your compiled binary will be compiled and placed in `tools`
+- Your compiled binary will be compiled and placed in `tools`.
+
+- Follow `tools/example.*` if you get confused.
 
 ## How this build works
 
