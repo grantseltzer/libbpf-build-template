@@ -5,7 +5,7 @@ This repository serves as a template to help eBPF developers build tools written
 ## How to use this template
 
 - Generate your own `vmlinux.h` file:
-    - `bpftool...`
+    - `bpftool btf dump file /sys/kernel/btf/vmlinux format c > tools/vmlinux.h`
 
 - Place your bpf code in a file called `tools/<name>.bpf.c` extension. 
 
